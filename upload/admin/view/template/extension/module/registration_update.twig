@@ -1,0 +1,210 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+				<a onclick="$('#form-module').attr('action', '{{ stay }}');$('#form-module').submit();" id="save_stay" data-toggle="tooltip" title="{{ button_stay }}" class="btn btn-success"><i class="fa fa-check"></i></a>
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {% if error_warning %}
+		<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>
+		{% endif %}
+		{% if success %}
+		<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>
+		{% endif %}
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal" autocomplete="off">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="select-status">{{ entry_status }}</label>
+            <div class="col-sm-3">
+              <select name="module_registration_update_status" id="select-status" class="form-control">
+                {% if status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-fullname">{{ entry_fullname }}<br />
+							<span class="help"><i class="fa fa-info-circle"></i> {{ help_fullname }}</span></label>
+						<div class="col-sm-1">
+							<input type="checkbox" id="input-fullname" name="fullname" value="{{ fullname ? fullname : 0 }}" onchange="checkValues(this.name)" {{ fullname ? 'checked="checked"' }} autocomplete="off" />
+						</div>
+					</div>
+
+          <div class="form-group">
+						<label class="col-sm-2 control-label" for="input-cpf">{{ entry_cpf }}<br />
+							<span class="help" data-toggle="tooltip" title="{{ help_cpf }}"><i class="fa fa-info-circle"></i> {{ help_personaldocument }}</span></label>
+						<div class="col-sm-1">
+							<input type="checkbox" id="input-cpf" name="cpf" value="{{ cpf }}" onchange="checkValues(this.name)" {{ cpf ? 'checked="checked"' }} autocomplete="off" />
+						</div>
+						<div id="select-custom-field-cpf" class="col-sm-6 required" {% if not cpf %}style="display: none;"{% endif %}>
+							<label class="col-sm-5 control-label" for="input-custom-field-cpf">{{ entry_referencefield }}</label>
+							<div class="col-sm-7">
+								<select name="custom_field_cpf" id="input-custom-field-cpf" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field in custom_fields %}
+										{% if custom_field.custom_field_id == custom_field_cpf %}
+										<option value="{{ custom_field.custom_field_id }}" selected="selected">{{ custom_field.name }}</option>
+										{% else %}
+										<option value="{{ custom_field.custom_field_id }}">{{ custom_field.name }}</option>
+										{% endif %}
+									{% endfor %}
+								</select>
+								{% if error_cpf %}<div class="text-danger">{{ error_cpf }}</div>{% endif %}
+							</div>
+						</div>
+					</div>
+
+          <div class="form-group">
+						<label class="col-sm-2 control-label" for="input-cnpj">{{ entry_cnpj }}<br />
+							<span class="help" data-toggle="tooltip" title="{{ help_cnpj }}"><i class="fa fa-info-circle"></i> {{ help_personaldocument }}</span></label>
+						<div class="col-sm-1">
+							<input type="checkbox" id="input-cnpj" name="cnpj" value="{{ cnpj }}" onchange="checkValues(this.name)" {{ cnpj ? 'checked="checked"' }} autocomplete="off" />
+						</div>
+						<div id="select-custom-field-cnpj" class="col-sm-6 required" {% if not cnpj %}style="display: none;"{% endif %}>
+							<label class="col-sm-5 control-label" for="input-custom-field-cnpj">{{ entry_referencefield }}</label>
+							<div class="col-sm-7">
+								<select name="custom_field_cnpj" id="input-custom-field-cnpj" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field in custom_fields %}
+										{% if custom_field.custom_field_id == custom_field_cnpj %}
+										<option value="{{ custom_field.custom_field_id }}" selected="selected">{{ custom_field.name }}</option>
+										{% else %}
+										<option value="{{ custom_field.custom_field_id }}">{{ custom_field.name }}</option>
+										{% endif %}
+									{% endfor %}
+								</select>
+								{% if error_cnpj %}<div class="text-danger">{{ error_cnpj }}</div>{% endif %}
+							</div>
+						</div>
+					</div>
+
+          <div class="form-group">
+						<label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }}<br />
+							<span class="help" data-toggle="tooltip" title="{{ help_telephone }}"><i class="fa fa-info-circle"></i> {{ help_phone }}</span></label>
+						<div class="col-sm-1">
+							<input type="checkbox" id="input-telephone" name="telephone" value="{{ telephone }}" onchange="checkValues(this.name)" {{ telephone ? 'checked="checked"' }} autocomplete="off" />
+						</div>
+						{#<div id="select-custom-field-telephone" class="col-sm-6"></div>#}
+					</div>
+
+          <div class="form-group">
+						<label class="col-sm-2 control-label" for="input-birthdate">{{ entry_birthdate }}<br />
+							<span class="help" data-toggle="tooltip" title="{{ help_birth }}"><i class="fa fa-info-circle"></i> {{ help_birthdate }}</span></label>
+						<div class="col-sm-1">
+							<input type="checkbox" id="input-birthdate" name="birthdate" value="{{ birthdate }}" onchange="checkValues(this.name)" {{ birthdate ? 'checked="checked"' }} autocomplete="off" />
+						</div>
+
+						<div id="select-custom-field-birthdate" class="col-sm-6 required" {% if not birthdate %}style="display: none;"{% endif %}>
+							<label class="col-sm-5 control-label" for="input-custom-field-birthdate">{{ entry_referencefield }}</label>
+							<div class="col-sm-7">
+								<select name="custom_field_birthdate" id="input-custom-field-birthdate" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field in custom_fields %}
+										{% if custom_field.custom_field_id == custom_field_birthdate %}
+										<option value="{{ custom_field.custom_field_id }}" selected="selected">{{ custom_field.name }}</option>
+										{% else %}
+										<option value="{{ custom_field.custom_field_id }}">{{ custom_field.name }}</option>
+										{% endif %}
+									{% endfor %}
+								</select>
+								{% if error_birthdate %}<div class="text-danger">{{ error_birthdate }}</div>{% endif %}
+							</div>
+						</div>
+
+					</div>
+        </form>
+				<hr>
+				<div class="panel panel-default well" style="margin-bottom: 0;">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a href="#collapse-functions" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" style="text-transform: uppercase;font-weight: 700;">{{ text_functions }}</a></h4>
+					</div>
+					<div id="collapse-functions" class="panel-collapse collapse in">
+						<div class="panel-body" style="padding-bottom: 0;">
+							<p><i class="fa fa-{{ status == 1 ? 'check' : 'close' }}"></i> {{ text_func1 }}</p>
+							<p><i class="fa fa-{{ status == 1 ? 'check' : 'close' }}"></i> {{ text_func2 }}</p>
+							<p><i class="fa fa-{{ status == 1 and fullname ? 'check' : 'close' }}"></i> {{ text_func7 }}</p>
+							<p><i class="fa fa-{{ status == 1 and cpf ? 'check' : 'close' }}"></i> {{ text_func3 }}</p>
+							<p><i class="fa fa-{{ status == 1 and cnpj ? 'check' : 'close' }}"></i> {{ text_func4 }}</p>
+							<p><i class="fa fa-{{ status == 1 and telephone ? 'check' : 'close' }}"></i> {{ text_func5 }}</p>
+							<p><i class="fa fa-{{ status == 1 and birthdate ? 'check' : 'close' }}"></i> {{ text_func6 }}</p>
+						</div>
+					</div>
+				</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style type="text/css">
+.form-group + .form-group {border-top: 1px solid #ededed;}
+.toggle, [id^="select-custom-field"] {margin-top: 10px;}
+.toggle, .toggle.off {border-radius: 2rem;}
+#form-module select {width: 60%;}
+#form-module .help {font-size: 0.9rem;}
+#form-module .help::after {display: none;}
+#collapse-functions .fa.fa-check {color: #4cb64c;}
+#collapse-functions .fa.fa-close {color: #d0321e;}
+</style>
+<script type="text/javascript"><!--
+$(function() {
+	$(':checkbox').bootstrapToggle({
+		on:  '{{ text_yes }}',
+		off: '{{ text_no }}',
+		width: '90px',
+		onstyle:  'primary',
+		offstyle: 'danger'
+	});
+});
+
+function checkValues(name) {
+	$(':checkbox[id=\'input-' + name + '\']').each(function(index, e) {
+		if (e.checked === true) {
+			$('#input-' + name).val('1')
+		} else {
+			$('#input-' + name).val('0')
+			$('#select-custom-field-' + name + ' select').prop('selectedIndex', 0)
+		}
+		
+		$('#select-custom-field-' + name).toggle('slow')
+	});
+}
+
+$('#save_stay').on('click', function() {
+	$('.alert-danger, .alert-success').remove()
+
+  $.ajax({
+    beforeSend: function() {
+      $('#form-module').fadeTo('slow', 0.3)
+    },
+    complete: function() {
+      $('#form-module').fadeTo('slow', 1)
+    },
+  });
+});
+//--></script>
+{{ footer }}
