@@ -22,6 +22,7 @@ $_['button_cancel']           = 'Cancelar';
 
 // Entry
 $_['entry_status']            = 'Situação';
+$_['entry_preventclosing']    = 'Impedir o fechamento';
 $_['entry_fullname']          = 'Nome Completo';
 $_['entry_cpf']               = 'CPF';
 $_['entry_cnpj']              = 'CNPJ';
@@ -30,6 +31,10 @@ $_['entry_birthdate']         = 'Data Nascimento';
 $_['entry_referencefield']    = 'Campo de referência';
 
 // Help
+$_['help_method']             = 'Escolha em qual página exibir o pop-up';
+$_['help_preventclosing']     = 'Escolha a forma de interação do usuário com o pop-up';
+$_['help_preventclosing_yes'] = 'SIM: a atualização será obrigatório';
+$_['help_preventclosing_no']  = 'NÃO: deixe o usuário decidir quando deseja fazer';
 $_['help_fullname']           = 'Habilite para unificar os campos nome e sobrenome';
 $_['help_personaldocument']   = 'Habilite para validar o número informado e colocar a máscara para preenchimento';
 $_['help_phone']              = 'Habilite para colocar a máscara para preenchimento';

@@ -32,7 +32,7 @@
         <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal" autocomplete="off">
           <div class="form-group">
             <label class="col-sm-2 control-label" for="select-status">{{ entry_status }}</label>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <select name="module_registration_update_status" id="select-status" class="form-control">
                 {% if status %}
                 <option value="1" selected="selected">{{ text_enabled }}</option>
@@ -46,22 +46,46 @@
           </div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="input-fullname">{{ entry_fullname }}<br />
-							<span class="help"><i class="fa fa-info-circle"></i> {{ help_fullname }}</span></label>
-						<div class="col-sm-1">
+            <label class="col-sm-2 control-label" for="select-method">Método de exibição
+							<span class="help"><i class="fa fa-info-circle"></i> {{ help_method }}</span>
+						</label>
+            <div class="col-sm-4">
+              <select name="method" id="select-method" class="form-control">
+								<option value="0" {{ method == '0' ? 'selected=selected' }}>Carrinho de compras</option>
+								<option value="1" {{ not method or method == '1' ? 'selected=selected' }}>Minha conta</option>
+								<option value="2" {{ method == '2' ? 'selected=selected' }}>Página inicial</option>
+              </select>
+            </div>
+          </div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-prevent_closing">{{ entry_preventclosing }}
+							<span class="help" data-toggle="tooltip" title="{{ help_preventclosing_yes ~ '<br>' ~ help_preventclosing_no }}"><i class="fa fa-info-circle"></i> {{ help_preventclosing }}</span>
+						</label>
+						<div class="col-sm-2 text-center">
+							<input type="checkbox" id="input-prevent_closing" name="prevent_closing" value="{{ prevent_closing ? prevent_closing : 0 }}" onchange="checkValues(this.name)" {{ prevent_closing ? 'checked="checked"' }} autocomplete="off" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-fullname">{{ entry_fullname }}
+							<span class="help"><i class="fa fa-info-circle"></i> {{ help_fullname }}</span>
+						</label>
+						<div class="col-sm-2 text-center">
 							<input type="checkbox" id="input-fullname" name="fullname" value="{{ fullname ? fullname : 0 }}" onchange="checkValues(this.name)" {{ fullname ? 'checked="checked"' }} autocomplete="off" />
 						</div>
 					</div>
 
           <div class="form-group">
-						<label class="col-sm-2 control-label" for="input-cpf">{{ entry_cpf }}<br />
-							<span class="help" data-toggle="tooltip" title="{{ help_cpf }}"><i class="fa fa-info-circle"></i> {{ help_personaldocument }}</span></label>
-						<div class="col-sm-1">
+						<label class="col-sm-2 control-label" for="input-cpf">{{ entry_cpf }}
+							<span class="help" data-toggle="tooltip" title="{{ help_cpf }}"><i class="fa fa-info-circle"></i> {{ help_personaldocument }}</span>
+						</label>
+						<div class="col-sm-2 text-center">
 							<input type="checkbox" id="input-cpf" name="cpf" value="{{ cpf }}" onchange="checkValues(this.name)" {{ cpf ? 'checked="checked"' }} autocomplete="off" />
 						</div>
 						<div id="select-custom-field-cpf" class="col-sm-6 required" {% if not cpf %}style="display: none;"{% endif %}>
-							<label class="col-sm-5 control-label" for="input-custom-field-cpf">{{ entry_referencefield }}</label>
-							<div class="col-sm-7">
+							<label class="col-sm-4 control-label" for="input-custom-field-cpf">{{ entry_referencefield }}</label>
+							<div class="col-sm-8">
 								<select name="custom_field_cpf" id="input-custom-field-cpf" class="form-control">
 									<option value="">{{ text_select }}</option>
 									{% for custom_field in custom_fields %}
@@ -78,14 +102,15 @@
 					</div>
 
           <div class="form-group">
-						<label class="col-sm-2 control-label" for="input-cnpj">{{ entry_cnpj }}<br />
-							<span class="help" data-toggle="tooltip" title="{{ help_cnpj }}"><i class="fa fa-info-circle"></i> {{ help_personaldocument }}</span></label>
-						<div class="col-sm-1">
+						<label class="col-sm-2 control-label" for="input-cnpj">{{ entry_cnpj }}
+							<span class="help" data-toggle="tooltip" title="{{ help_cnpj }}"><i class="fa fa-info-circle"></i> {{ help_personaldocument }}</span>
+						</label>
+						<div class="col-sm-2 text-center">
 							<input type="checkbox" id="input-cnpj" name="cnpj" value="{{ cnpj }}" onchange="checkValues(this.name)" {{ cnpj ? 'checked="checked"' }} autocomplete="off" />
 						</div>
 						<div id="select-custom-field-cnpj" class="col-sm-6 required" {% if not cnpj %}style="display: none;"{% endif %}>
-							<label class="col-sm-5 control-label" for="input-custom-field-cnpj">{{ entry_referencefield }}</label>
-							<div class="col-sm-7">
+							<label class="col-sm-4 control-label" for="input-custom-field-cnpj">{{ entry_referencefield }}</label>
+							<div class="col-sm-8">
 								<select name="custom_field_cnpj" id="input-custom-field-cnpj" class="form-control">
 									<option value="">{{ text_select }}</option>
 									{% for custom_field in custom_fields %}
@@ -102,24 +127,26 @@
 					</div>
 
           <div class="form-group">
-						<label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }}<br />
-							<span class="help" data-toggle="tooltip" title="{{ help_telephone }}"><i class="fa fa-info-circle"></i> {{ help_phone }}</span></label>
-						<div class="col-sm-1">
+						<label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }}
+							<span class="help" data-toggle="tooltip" title="{{ help_telephone }}"><i class="fa fa-info-circle"></i> {{ help_phone }}</span>
+						</label>
+						<div class="col-sm-2 text-center">
 							<input type="checkbox" id="input-telephone" name="telephone" value="{{ telephone }}" onchange="checkValues(this.name)" {{ telephone ? 'checked="checked"' }} autocomplete="off" />
 						</div>
 						{#<div id="select-custom-field-telephone" class="col-sm-6"></div>#}
 					</div>
 
           <div class="form-group">
-						<label class="col-sm-2 control-label" for="input-birthdate">{{ entry_birthdate }}<br />
-							<span class="help" data-toggle="tooltip" title="{{ help_birth }}"><i class="fa fa-info-circle"></i> {{ help_birthdate }}</span></label>
-						<div class="col-sm-1">
+						<label class="col-sm-2 control-label" for="input-birthdate">{{ entry_birthdate }}
+							<span class="help" data-toggle="tooltip" title="{{ help_birth }}"><i class="fa fa-info-circle"></i> {{ help_birthdate }}</span>
+						</label>
+						<div class="col-sm-2 text-center">
 							<input type="checkbox" id="input-birthdate" name="birthdate" value="{{ birthdate }}" onchange="checkValues(this.name)" {{ birthdate ? 'checked="checked"' }} autocomplete="off" />
 						</div>
 
 						<div id="select-custom-field-birthdate" class="col-sm-6 required" {% if not birthdate %}style="display: none;"{% endif %}>
-							<label class="col-sm-5 control-label" for="input-custom-field-birthdate">{{ entry_referencefield }}</label>
-							<div class="col-sm-7">
+							<label class="col-sm-4 control-label" for="input-custom-field-birthdate">{{ entry_referencefield }}</label>
+							<div class="col-sm-8">
 								<select name="custom_field_birthdate" id="input-custom-field-birthdate" class="form-control">
 									<option value="">{{ text_select }}</option>
 									{% for custom_field in custom_fields %}
@@ -165,8 +192,8 @@
 .toggle, [id^="select-custom-field"] {margin-top: 10px;}
 .toggle, .toggle.off {border-radius: 2rem;}
 #form-module select {width: 60%;}
-#form-module .help {font-size: 0.9rem;}
-#form-module .help::after {display: none;}
+#form-module .help {display: block;font-size: 0.9rem;font-weight: normal;}
+#form-module .help:after {display: none;}
 #collapse-functions .fa.fa-check {color: #4cb64c;}
 #collapse-functions .fa.fa-close {color: #d0321e;}
 </style>

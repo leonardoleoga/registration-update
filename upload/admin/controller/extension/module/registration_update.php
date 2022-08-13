@@ -3,6 +3,8 @@ class ControllerExtensionModuleRegistrationUpdate extends Controller {
 	private $error = array();
 
 	private static $config_defaults = array(
+		'method',
+		'prevent_closing',
 		'fullname',
 		'cpf',
 		'cnpj',
